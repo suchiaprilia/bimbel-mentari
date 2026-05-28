@@ -1437,7 +1437,7 @@
 <!-- CTA Section -->
 <section class="cta-section">
   <div class="container">
-    <<h2>Webhook Berhasil 🎉</h2>
+    <h2>Siap Bergabung dengan Bimbel Mentari?</h2>
     <p>Daftarkan diri Anda sekarang. Nomor WhatsApp digunakan untuk menerima pengingat pembayaran dari sistem.</p>
     <a href="/daftar" class="btn btn-cta">
       <i class="fas fa-arrow-right mr-2"></i>Daftar Sekarang
