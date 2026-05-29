@@ -215,6 +215,12 @@
             color: #9aa5b1;
         }
 
+        .input-group i.toggle-password {
+            left: auto;
+            right: 18px;
+            cursor: pointer;
+        }
+
         input {
             width: 100%;
             height: 58px;
@@ -225,6 +231,10 @@
             font-family: inherit;
             outline: none;
             transition: .2s;
+        }
+
+        input.password-input {
+            padding-right: 50px;
         }
 
         input:focus {
@@ -373,7 +383,8 @@
                 <label>Password</label>
                 <div class="input-group">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" name="password" placeholder="Masukkan password" required>
+                    <input type="password" name="password" id="password" class="password-input" placeholder="Masukkan password" required>
+                    <i class="fa-solid fa-eye toggle-password" id="togglePassword"></i>
                 </div>
 
                 <button class="btn-login" type="submit">
@@ -387,6 +398,18 @@
         </div>
     </div>
 </div>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+
+    togglePassword.addEventListener('click', function (e) {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('fa-eye-slash');
+        this.classList.toggle('fa-eye');
+    });
+</script>
 
 </body>
 </html>
