@@ -203,6 +203,13 @@
           ✏ Edit
         </a>
 
+        <form action="{{ route('siswa.resetPassword', $row->id) }}" method="POST" onsubmit="return confirm('Yakin ingin mereset password siswa ini menjadi 12345678?');">
+          @csrf
+          <button type="submit" class="dropdown-item text-warning">
+            🔑 Reset Password
+          </button>
+        </form>
+
         <form 
           action="{{ route('siswa.destroy', $row->id) }}" 
           method="POST"

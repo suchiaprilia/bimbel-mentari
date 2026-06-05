@@ -164,4 +164,20 @@ public function updateProfil(Request $request)
 
     return redirect()->back()->with('success', 'Profil berhasil diupdate');
 }
+
+    public function resetPassword($id)
+    {
+        try {
+            $siswa = \App\Models\Siswa::findOrFail($id);
+            if ($siswa->id_user) {
+                \App\Models\User::where('id', $siswa->id_user)->update([
+                    'password' => \Illuminate\Support\Facades\Hash::make('12345678')
+                ]);
+                return redirect()->route('siswa.index')->with('success', 'Password siswa berhasil di-reset menjadi 12345678.');
+            }
+            return redirect()->route('siswa.index')->with('error', 'Siswa tidak memiliki akun user aktif.');
+        } catch (\Exception $e) {
+            return redirect()->route('siswa.index')->with('error', 'Gagal mereset password siswa.');
+        }
+    }
 }

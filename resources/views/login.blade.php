@@ -390,6 +390,12 @@
                 <button class="btn-login" type="submit">
                     <i class="fa-solid fa-paper-plane"></i> Masuk Sekarang
                 </button>
+
+                <div style="text-align: center; margin-top: 18px;">
+                    <a href="https://wa.me/6281349171720?text=Halo%20Admin,%20saya%20lupa%20password%20akun%20Bimbel%20Mentari%20saya.%20Mohon%20bantuannya%20untuk%20di-reset." target="_blank" style="color: #7b8490; font-size: 14px; text-decoration: none; font-weight: 600; transition: .2s;" onmouseover="this.style.color='#073763'" onmouseout="this.style.color='#7b8490'">
+                        <i class="fa-solid fa-circle-question"></i> Lupa Password? Hubungi Admin
+                    </a>
+                </div>
             </form>
 
             <a href="/" class="back-link">

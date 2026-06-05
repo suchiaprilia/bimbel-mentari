@@ -223,4 +223,20 @@ class GuruController extends Controller
 
         return back()->with('success', 'Profil berhasil diperbarui');
     }
+
+    public function resetPassword($id)
+    {
+        try {
+            $guru = Guru::findOrFail($id);
+            if ($guru->id_user) {
+                User::where('id', $guru->id_user)->update([
+                    'password' => Hash::make('12345678')
+                ]);
+                return redirect()->route('guru.index')->with('success', 'Password guru berhasil di-reset menjadi 12345678.');
+            }
+            return redirect()->route('guru.index')->with('error', 'Guru tidak memiliki akun user aktif.');
+        } catch (\Exception $e) {
+            return redirect()->route('guru.index')->with('error', 'Gagal mereset password guru.');
+        }
+    }
 }

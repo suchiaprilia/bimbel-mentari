@@ -205,6 +205,13 @@
 
             </a>
 
+            <form action="{{ route('guru.resetPassword', $row->id) }}" method="POST" onsubmit="return confirm('Yakin ingin mereset password guru ini menjadi 12345678?');">
+              @csrf
+              <button type="submit" class="dropdown-item text-warning">
+                🔑 Reset Password
+              </button>
+            </form>
+
             <form 
               action="{{ route('guru.destroy', $row->id) }}"
               method="POST"

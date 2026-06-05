@@ -60,8 +60,7 @@ class PaymentReminderService
                     "No. Rekening : *4557 0100 8242 506*\n" .
                     "Atas Nama : *Suchi Aprilia*\n\n" .
                     "Setelah melakukan pembayaran melalui transfer, mohon mengirimkan bukti pembayaran kepada admin untuk proses konfirmasi.\n\n" .
-                    "Mohon segera lakukan pembayaran sebelum jatuh tempo. Terima kasih atas perhatian dan kerja samanya.\n\n" .
-                    "*– Sent via Fonnte*";
+                    "Mohon segera lakukan pembayaran sebelum jatuh tempo. Terima kasih atas perhatian dan kerja samanya.";
             } else {
                 // Sudah lewat jatuh tempo
                 $hariTerlambat = abs($sistiHariLagi);
@@ -76,8 +75,7 @@ class PaymentReminderService
                     "No. Rekening : *4557 0100 8242 506*\n" .
                     "Atas Nama : *Suchi Aprilia*\n\n" .
                     "Setelah melakukan pembayaran melalui transfer, mohon mengirimkan bukti pembayaran kepada admin untuk proses konfirmasi.\n\n" .
-                    "Harap segera melakukan pembayaran atau hubungi admin. Terima kasih atas perhatian dan kerja samanya.\n\n" .
-                    "*– Sent via Fonnte*";
+                    "Harap segera melakukan pembayaran atau hubungi admin. Terima kasih atas perhatian dan kerja samanya.";
             }
 
             $sent = $this->whatsApp->sendMessage($payment->siswa->no_whatsapp, $message);
