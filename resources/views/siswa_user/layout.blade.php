@@ -152,6 +152,45 @@
             });
         }
     });
+
+    // form-delete
+    document.querySelectorAll('.form-delete').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nama = form.getAttribute('data-nama') || 'data ini';
+            Swal.fire({
+                title: 'Hapus ' + nama + '?',
+                text: 'Data yang dihapus tidak bisa dikembalikan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) form.submit();
+            });
+        });
+    });
+
+    // form-confirm dynamic
+    document.querySelectorAll('.form-confirm').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: form.getAttribute('data-title') || 'Konfirmasi',
+                text: form.getAttribute('data-text') || 'Apakah Anda yakin?',
+                icon: form.getAttribute('data-icon') || 'question',
+                showCancelButton: true,
+                confirmButtonColor: form.getAttribute('data-color') || '#003b70',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: form.getAttribute('data-btn') || 'Ya, Lanjutkan!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) form.submit();
+            });
+        });
+    });
 </script>
 </body>
 

@@ -107,7 +107,7 @@
                             <i class="fas fa-download"></i>
                         </a>
                     @endif
-                    <form action="/arsip-absensi/{{ $a->id }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus arsip ini?');">
+                    <form action="/arsip-absensi/{{ $a->id }}" method="POST" class="d-inline form-delete" data-nama="arsip absensi">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" title="Hapus Arsip">

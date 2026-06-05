@@ -96,10 +96,10 @@
             <a href="{{ route('tagihan.edit', $row->id) }}" 
                class="dropdown-item">✏ Edit Tagihan</a>
 
-            <form action="{{ route('tagihan.destroy', $row->id) }}" method="POST">
+            <form action="{{ route('tagihan.destroy', $row->id) }}" method="POST" class="form-delete" data-nama="data ini">
               @csrf
               @method('DELETE')
-              <button class="dropdown-item text-danger" onclick="return confirm('Hapus data?')">
+              <button type="submit" class="dropdown-item text-danger">
                 🗑 Hapus
               </button>
             </form>

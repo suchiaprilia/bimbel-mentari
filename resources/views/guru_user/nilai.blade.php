@@ -266,13 +266,14 @@
                                     {{ $r->created_at->format('d M Y') }}
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="/guru/nilai/delete/{{ $r->id }}"
-                                       onclick="return confirm('Hapus nilai ini?')"
-                                       style="display:inline-flex;align-items:center;gap:5px;background:#fee2e2;color:#dc2626;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;transition:0.2s;"
-                                       onmouseover="this.style.background='#fecaca'"
-                                       onmouseout="this.style.background='#fee2e2'">
-                                        <i class="fa-solid fa-trash-can"></i> Hapus
-                                    </a>
+                                    <form action="/guru/nilai/delete/{{ $r->id }}" method="GET" class="form-delete" data-nama="nilai ini" style="margin:0; padding:0; display:inline;">
+                                        <button type="submit"
+                                           style="border:none; cursor:pointer; display:inline-flex;align-items:center;gap:5px;background:#fee2e2;color:#dc2626;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;transition:0.2s;"
+                                           onmouseover="this.style.background='#fecaca'"
+                                           onmouseout="this.style.background='#fee2e2'">
+                                            <i class="fa-solid fa-trash-can"></i> Hapus
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

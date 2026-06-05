@@ -62,20 +62,29 @@
 
               {{-- TERIMA --}}
               <form action="{{ route('pendaftaran.simpanTerima', $item->id) }}"
-                    method="POST">
+                    method="POST" class="form-confirm"
+                    data-title="Terima pendaftaran ini?"
+                    data-text="Pendaftar akan dipindahkan ke Data Siswa."
+                    data-icon="question"
+                    data-color="#28a745"
+                    data-btn="Ya, Terima">
                 @csrf
-                <button class="dropdown-item text-success"
-                        onclick="return confirm('Terima pendaftaran ini?')">
+                <button type="submit" class="dropdown-item text-success">
                   ✔ Terima
                 </button>
               </form>
 
               {{-- TOLAK --}}
-              <form action="{{ route('pendaftaran.tolak', $item->id) }}" method="POST">
+              <form action="{{ route('pendaftaran.tolak', $item->id) }}" method="POST"
+                    class="form-confirm"
+                    data-title="Tolak pendaftaran ini?"
+                    data-text="Status pendaftaran akan diubah menjadi Ditolak."
+                    data-icon="warning"
+                    data-color="#dc3545"
+                    data-btn="Ya, Tolak">
                 @csrf
                 @method('PUT')
-                <button class="dropdown-item text-danger"
-                        onclick="return confirm('Tolak pendaftaran ini?')">
+                <button type="submit" class="dropdown-item text-danger">
                   ✖ Tolak
                 </button>
               </form>

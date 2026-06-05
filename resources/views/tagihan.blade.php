@@ -109,7 +109,7 @@
                 </td>
                 <td>
                   <a href="{{ route('tagihan.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                  <form action="{{ route('tagihan.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus tagihan ini?');">
+                  <form action="{{ route('tagihan.destroy', $item->id) }}" method="POST" class="d-inline form-delete" data-nama="tagihan ini">
                     @csrf
                     @method('DELETE')
                     <button class="btn btn-sm btn-danger">Hapus</button>

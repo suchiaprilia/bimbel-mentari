@@ -434,6 +434,25 @@
         });
     });
 
+    // form-confirm dynamic
+    document.querySelectorAll('.form-confirm').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: form.getAttribute('data-title') || 'Konfirmasi',
+                text: form.getAttribute('data-text') || 'Apakah Anda yakin?',
+                icon: form.getAttribute('data-icon') || 'question',
+                showCancelButton: true,
+                confirmButtonColor: form.getAttribute('data-color') || '#003b70',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: form.getAttribute('data-btn') || 'Ya, Lanjutkan!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) form.submit();
+            });
+        });
+    });
+
     function confirmLogout(event) {
         event.preventDefault();
         Swal.fire({

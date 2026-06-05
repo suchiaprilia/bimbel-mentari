@@ -19,7 +19,7 @@
                 </form>
 
                 {{-- CLEAR ALL --}}
-                <form action="{{ route('notifikasi.clear') }}" method="POST" onsubmit="return confirm('Hapus semua riwayat notifikasi?')">
+                <form action="{{ route('notifikasi.clear') }}" method="POST" class="form-delete" data-nama="semua riwayat notifikasi">
                     @csrf
                     <button type="submit" class="btn btn-danger btn-sm">
                         <i class="fa-solid fa-trash-can"></i> Hapus Semua Log
