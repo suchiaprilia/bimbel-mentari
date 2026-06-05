@@ -129,6 +129,20 @@
             }
         });
     }
+
+    // Mengingat posisi scroll sidebar
+    document.addEventListener("DOMContentLoaded", function() {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            const scrollPos = localStorage.getItem('sidebarScrollGuru');
+            if (scrollPos) {
+                sidebar.scrollTop = parseInt(scrollPos, 10);
+            }
+            window.addEventListener('beforeunload', function() {
+                localStorage.setItem('sidebarScrollGuru', sidebar.scrollTop);
+            });
+        }
+    });
 </script>
 </body>
 

@@ -452,6 +452,22 @@
             }
         });
     }
+
+    // Mengingat posisi scroll sidebar
+    document.addEventListener("DOMContentLoaded", function() {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            // Kembalikan posisi scroll dari localStorage
+            const scrollPos = localStorage.getItem('sidebarScroll');
+            if (scrollPos) {
+                sidebar.scrollTop = parseInt(scrollPos, 10);
+            }
+            // Simpan posisi saat akan pindah halaman
+            window.addEventListener('beforeunload', function() {
+                localStorage.setItem('sidebarScroll', sidebar.scrollTop);
+            });
+        }
+    });
 </script>
 
 @yield('scripts')

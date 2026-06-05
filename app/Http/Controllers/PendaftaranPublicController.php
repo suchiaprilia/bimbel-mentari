@@ -87,7 +87,7 @@ class PendaftaranPublicController extends Controller
 
             return redirect()->back()->with(
                 'success',
-                'Pendaftaran berhasil dikirim! Simpan kode pendaftaran Anda: ' . $kodePendaftaran
+                'Pendaftaran berhasil dikirim! Gunakan Nomor WhatsApp Anda untuk mengecek status pendaftaran nanti.'
             );
 
         } catch (\Exception $e) {

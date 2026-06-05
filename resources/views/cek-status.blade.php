@@ -405,7 +405,7 @@
 
               <h2>Cek Status Pendaftaran</h2>
               <p>
-                Gunakan kode pendaftaran atau nomor WhatsApp yang digunakan saat mendaftar
+                Gunakan Nomor WhatsApp yang Anda daftarkan
                 untuk melihat apakah data pendaftaran masih menunggu, diterima, atau ditolak.
               </p>
 
@@ -415,8 +415,8 @@
                     <i class="fas fa-ticket-alt"></i>
                   </div>
                   <div>
-                    <h6>Kode / Nomor WhatsApp</h6>
-                    <p>Masukkan kode pendaftaran atau nomor WhatsApp yang digunakan saat mengisi formulir.</p>
+                    <h6>Nomor WhatsApp</h6>
+                    <p>Masukkan nomor WhatsApp yang Anda gunakan saat mengisi formulir pendaftaran.</p>
                   </div>
                 </div>
 
@@ -453,7 +453,7 @@
 
             <h4>Status Pendaftaran</h4>
             <p class="subtitle">
-              Masukkan kode pendaftaran atau nomor WhatsApp yang digunakan saat mendaftar untuk melihat hasil verifikasi.
+              Masukkan Nomor WhatsApp yang Anda gunakan saat mendaftar untuk melihat hasil verifikasi.
             </p>
 
             @if(session('error'))
@@ -476,10 +476,10 @@
               @csrf
 
               <div class="mb-3">
-                <label>Kode Pendaftaran / Nomor WhatsApp</label>
+                <label>Nomor WhatsApp</label>
                 <input type="text" name="keyword" class="form-control"
                   value="{{ old('keyword') }}"
-                  placeholder="Contoh: BM-20260503-0001 atau 081234567890" required>
+                  placeholder="Contoh: 081234567890" required>
               </div>
 
               <div class="d-grid mt-4">
@@ -520,11 +520,6 @@
                 <h5 class="result-title">{{ $pendaftaran->nama_siswa }}</h5>
 
                 <div class="result-item">
-                  <span>Kode Pendaftaran</span>
-                  <span>{{ $pendaftaran->kode_pendaftaran }}</span>
-                </div>
-
-                <div class="result-item">
                   <span>Nomor WhatsApp</span>
                   <span>{{ $pendaftaran->no_whatsapp }}</span>
                 </div>
@@ -532,11 +527,6 @@
                 <div class="result-item">
                   <span>Jenjang</span>
                   <span>{{ $pendaftaran->jenjang ?? '-' }}</span>
-                </div>
-
-                <div class="result-item">
-                  <span>Kelas Dipilih</span>
-                  <span>{{ $pendaftaran->kelas_dipilih ?? '-' }}</span>
                 </div>
 
                 <div class="result-item">
