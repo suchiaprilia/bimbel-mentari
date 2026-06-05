@@ -43,6 +43,15 @@ class HomeController extends Controller
         $kelasChart = Kelas::withCount('siswa')
             ->get();
 
+        // GRAFIK STATUS PEMBAYARAN BULAN INI
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+        $chartPembayaran = [
+            'Lunas' => Pembayaran::whereMonth('tanggal_jatuh_tempo', $currentMonth)->whereYear('tanggal_jatuh_tempo', $currentYear)->where('status', 'Lunas')->count(),
+            'Menunggu' => Pembayaran::whereMonth('tanggal_jatuh_tempo', $currentMonth)->whereYear('tanggal_jatuh_tempo', $currentYear)->where('status', 'Menunggu')->count(),
+            'Belum' => Pembayaran::whereMonth('tanggal_jatuh_tempo', $currentMonth)->whereYear('tanggal_jatuh_tempo', $currentYear)->where('status', 'Belum')->count(),
+        ];
+
         return view('beranda', compact(
             'jumlahSiswa',
             'jumlahGuru',
@@ -51,7 +60,8 @@ class HomeController extends Controller
             'jadwalHariIni',
             'pembayaranPending',
             'pembayaranTerbaru',
-            'kelasChart'
+            'kelasChart',
+            'chartPembayaran'
         ));
     }
 }

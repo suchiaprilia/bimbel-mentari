@@ -12,13 +12,23 @@ use Illuminate\Support\Facades\DB;
 
 class JadwalController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->query('search');
+        
+        $jadwal = Jadwal::with(['guru', 'kelas', 'mapel'])
+                    ->when($search, function($q) use ($search) {
+                        $q->whereHas('mapel', function($q) use ($search) {
+                              $q->where('nama_mapel', 'like', "%{$search}%");
+                          })
+                          ->orWhere('tanggal', 'like', "%{$search}%");
+                    })
+                    ->orderBy('tanggal', 'desc')
+                    ->orderBy('jam_mulai', 'asc')
+                    ->paginate(10);
+
         return view('jadwal', [
-            'jadwal' => Jadwal::with(['guru', 'kelas', 'mapel'])
-                        ->orderBy('tanggal', 'desc')
-                        ->orderBy('jam_mulai', 'asc')
-                        ->get(),
+            'jadwal' => $jadwal,
 
             'guru' => Guru::orderBy('nama_guru')->get(),
 
@@ -94,13 +104,23 @@ class JadwalController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        $search = $request->query('search');
+        
+        $jadwal = Jadwal::with(['guru', 'kelas', 'mapel'])
+                    ->when($search, function($q) use ($search) {
+                        $q->whereHas('mapel', function($q) use ($search) {
+                              $q->where('nama_mapel', 'like', "%{$search}%");
+                          })
+                          ->orWhere('tanggal', 'like', "%{$search}%");
+                    })
+                    ->orderBy('tanggal', 'desc')
+                    ->orderBy('jam_mulai', 'asc')
+                    ->paginate(10);
+
         return view('jadwal', [
-            'jadwal' => Jadwal::with(['guru', 'kelas', 'mapel'])
-                        ->orderBy('tanggal', 'desc')
-                        ->orderBy('jam_mulai', 'asc')
-                        ->get(),
+            'jadwal' => $jadwal,
 
             'guru' => Guru::orderBy('nama_guru')->get(),
 

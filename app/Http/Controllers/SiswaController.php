@@ -8,10 +8,22 @@ use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->query('search');
+        
+        $siswa = Siswa::with('kelas')
+            ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id')
+            ->select('siswa.*')
+            ->when($search, function($q) use ($search) {
+                $q->where('siswa.nama_siswa', 'like', "%{$search}%")
+                  ->orWhere('siswa.no_whatsapp', 'like', "%{$search}%");
+            })
+            ->orderBy('kelas.nama_kelas', 'asc')
+            ->paginate(10);
+
         return view('siswa', [
-            'siswa' => Siswa::with('kelas')->get(),
+            'siswa' => $siswa,
             'kelas' => Kelas::all(),
             'editSiswa' => null
         ]);
@@ -63,10 +75,22 @@ class SiswaController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        $search = $request->query('search');
+        
+        $siswa = Siswa::with('kelas')
+            ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id')
+            ->select('siswa.*')
+            ->when($search, function($q) use ($search) {
+                $q->where('siswa.nama_siswa', 'like', "%{$search}%")
+                  ->orWhere('siswa.no_whatsapp', 'like', "%{$search}%");
+            })
+            ->orderBy('kelas.nama_kelas', 'asc')
+            ->paginate(10);
+
         return view('siswa', [
-            'siswa' => Siswa::with('kelas')->get(),
+            'siswa' => $siswa,
             'kelas' => Kelas::all(),
             'editSiswa' => Siswa::findOrFail($id)
         ]);

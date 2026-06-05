@@ -11,14 +11,21 @@ use Illuminate\Support\Facades\Auth;
 
 class GuruController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->query('search');
+        
+        $guru = Guru::with('mapel')
+            ->when($search, function($q) use ($search) {
+                $q->where('nama_guru', 'like', "%{$search}%")
+                  ->orWhere('no_whatsapp', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(10);
+
         return view('guru', [
-
-            'guru' => Guru::with('mapel')->get(),
-
+            'guru' => $guru,
             'mapel' => MataPelajaran::all(),
-
             'editGuru' => null
         ]);
     }
@@ -65,14 +72,21 @@ class GuruController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        $search = $request->query('search');
+        
+        $guru = Guru::with('mapel')
+            ->when($search, function($q) use ($search) {
+                $q->where('nama_guru', 'like', "%{$search}%")
+                  ->orWhere('no_whatsapp', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(10);
+
         return view('guru', [
-
-            'guru' => Guru::with('mapel')->get(),
-
+            'guru' => $guru,
             'mapel' => MataPelajaran::all(),
-
             'editGuru' => Guru::findOrFail($id)
         ]);
     }

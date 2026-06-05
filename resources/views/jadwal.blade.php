@@ -257,6 +257,13 @@
 {{-- TABEL --}}
 <x-card title="Data Jadwal">
 
+<div class="mb-3 d-flex justify-content-end">
+  <form action="{{ route('jadwal.index') }}" method="GET" class="form-inline" style="gap: 5px;">
+    <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari mapel / tanggal..." value="{{ request('search') }}">
+    <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Cari</button>
+  </form>
+</div>
+
 <div class="table-responsive">
 
 <table class="table table-bordered table-hover">
@@ -284,7 +291,7 @@
 
         <tr>
 
-            <td>{{ $loop->iteration }}</td>
+            <td>{{ $jadwal->firstItem() + $loop->index }}</td>
 
             <td>{{ $row->tanggal }}</td>
 
@@ -347,6 +354,8 @@
                         <form 
                             action="{{ route('jadwal.destroy', $row->id_jadwal) }}"
                             method="POST"
+                            class="form-delete"
+                            data-nama="jadwal ini"
                         >
 
                             @csrf
@@ -385,6 +394,10 @@
 
 </table>
 
+</div>
+
+<div class="mt-4">
+  {{ $jadwal->withQueryString()->links() }}
 </div>
 
 </x-card>

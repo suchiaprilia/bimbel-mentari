@@ -26,6 +26,13 @@
 {{-- TABEL --}}
 <x-card title="Data Pembayaran">
 
+<div class="mb-3 d-flex justify-content-end">
+  <form action="{{ route('pembayaran.index') }}" method="GET" class="form-inline" style="gap: 5px;">
+    <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari siswa / status..." value="{{ request('search') }}">
+    <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Cari</button>
+  </form>
+</div>
+
 <div class="table-responsive">
 <table class="table table-hover align-middle">
   <thead class="bg-light">
@@ -45,7 +52,7 @@
     @foreach($pembayaran as $row)
     <tr>
 
-      <td>{{ $loop->iteration }}</td>
+      <td>{{ $pembayaran->firstItem() + $loop->index }}</td>
       <td>{{ $row->siswa->nama_siswa ?? '-' }}</td>
       <td>Rp {{ number_format($row->jumlah,0,',','.') }}</td>
       <td>{{ ucfirst($row->metode_pembayaran) }}</td>
@@ -112,6 +119,10 @@
     @endforeach
   </tbody>
 </table>
+</div>
+
+<div class="mt-4">
+  {{ $pembayaran->withQueryString()->links() }}
 </div>
 
 </x-card>

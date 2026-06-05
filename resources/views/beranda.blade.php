@@ -154,8 +154,20 @@
     </div>
 
     <div class="row">
-        {{-- CHART --}}
-        <div class="col-xl-7 mb-4">
+        {{-- GRAFIK PEMBAYARAN --}}
+        <div class="col-xl-6 mb-4">
+            <div class="content-card">
+                <div class="card-header-modern">
+                    <h5>Status Tagihan Bulan Ini</h5>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartPembayaran"></canvas>
+                </div>
+            </div>
+        </div>
+
+        {{-- GRAFIK SISWA --}}
+        <div class="col-xl-6 mb-4">
             <div class="content-card">
                 <div class="card-header-modern">
                     <h5>Statistik Siswa Per Kelas</h5>
@@ -165,39 +177,11 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        {{-- PEMBAYARAN TERBARU (LIMIT 5) --}}
-        <div class="col-xl-5 mb-4">
-            <div class="content-card">
-                <div class="card-header-modern">
-                    <h5>Tagihan Terbaru</h5>
-                </div>
-                <div class="recent-list">
-                    @forelse($pembayaranTerbaru->take(5) as $p)
-                        <div class="recent-list-item">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="student-avatar" style="width: 35px; height: 35px; background: #f1f5f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #64748b;">
-                                    {{ substr($p->siswa->nama_siswa ?? '?', 0, 1) }}
-                                </div>
-                                <div>
-                                    <span class="d-block font-weight-bold small" style="color: #072d54;">{{ $p->siswa->nama_siswa ?? '-' }}</span>
-                                    <small class="text-muted" style="font-size: 11px;">{{ $p->created_at->format('d M') }}</small>
-                                </div>
-                            </div>
-                            <span class="status-pill {{ $p->status == 'lunas' ? 'pill-lunas' : 'pill-pending' }}">
-                                {{ $p->status }}
-                            </span>
-                        </div>
-                    @empty
-                        <p class="text-center text-muted py-4 small">Belum ada data.</p>
-                    @endforelse
-                </div>
-                <a href="/pembayaran" class="btn-view-more">Lihat Semua Tagihan</a>
-            </div>
-        </div>
-
-        {{-- JADWAL HARI INI (LIMIT 3) --}}
-        <div class="col-xl-12 mb-4">
+    <div class="row">
+        {{-- JADWAL HARI INI --}}
+        <div class="col-xl-6 mb-4">
             <div class="content-card">
                 <div class="card-header-modern">
                     <h5>Jadwal Hari Ini</h5>
@@ -205,8 +189,8 @@
                 </div>
                 
                 <div class="row">
-                    @forelse($jadwalHariIni->take(3) as $j)
-                        <div class="col-md-4">
+                    @forelse($jadwalHariIni->take(4) as $j)
+                        <div class="col-md-6">
                             <div class="schedule-item">
                                 <span class="schedule-time"><i class="far fa-clock"></i> {{ $j->jam_mulai }} - {{ $j->jam_selesai }}</span>
                                 <h6 class="font-weight-bold mb-1 small mt-1">{{ $j->mapel->nama_mapel ?? '-' }}</h6>
@@ -222,9 +206,39 @@
                     @endforelse
                 </div>
                 
-                @if($jadwalHariIni->count() > 3)
-                    <a href="/jadwal" class="btn-view-more">Lihat {{ $jadwalHariIni->count() - 3 }} Jadwal Lainnya</a>
+                @if($jadwalHariIni->count() > 4)
+                    <a href="/jadwal" class="btn-view-more">Lihat Semua Jadwal</a>
                 @endif
+            </div>
+        </div>
+
+        {{-- PEMBAYARAN TERBARU --}}
+        <div class="col-xl-6 mb-4">
+            <div class="content-card">
+                <div class="card-header-modern">
+                    <h5>Tagihan Terbaru</h5>
+                </div>
+                <div class="recent-list">
+                    @forelse($pembayaranTerbaru->take(4) as $p)
+                        <div class="recent-list-item">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="student-avatar" style="width: 35px; height: 35px; background: #f1f5f9; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #64748b;">
+                                    {{ substr($p->siswa->nama_siswa ?? '?', 0, 1) }}
+                                </div>
+                                <div>
+                                    <span class="d-block font-weight-bold small" style="color: #072d54;">{{ $p->siswa->nama_siswa ?? '-' }}</span>
+                                    <small class="text-muted" style="font-size: 11px;">{{ $p->created_at->format('d M') }}</small>
+                                </div>
+                            </div>
+                            <span class="status-pill {{ $p->status == 'Lunas' ? 'pill-lunas' : 'pill-pending' }}">
+                                {{ $p->status }}
+                            </span>
+                        </div>
+                    @empty
+                        <p class="text-center text-muted py-4 small">Belum ada data.</p>
+                    @endforelse
+                </div>
+                <a href="/pembayaran" class="btn-view-more">Lihat Semua Tagihan</a>
             </div>
         </div>
     </div>
@@ -267,6 +281,32 @@ document.addEventListener('DOMContentLoaded', function() {
             scales: {
                 y: { beginAtZero: true, grid: { display: false }, ticks: { precision: 0 } },
                 x: { grid: { display: false } }
+            }
+        }
+    });
+
+    const ctxPembayaran = document.getElementById('chartPembayaran');
+    new Chart(ctxPembayaran, {
+        type: 'doughnut',
+        data: {
+            labels: ['Lunas', 'Menunggu Verifikasi', 'Belum Bayar'],
+            datasets: [{
+                data: [
+                    {{ $chartPembayaran['Lunas'] }},
+                    {{ $chartPembayaran['Menunggu'] }},
+                    {{ $chartPembayaran['Belum'] }}
+                ],
+                backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                borderWidth: 0,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
             }
         }
     });

@@ -79,8 +79,12 @@
 
   <div class="col-lg-8">
     <div class="card card-secondary">
-      <div class="card-header">
+      <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">Daftar Tagihan</h5>
+        <form action="{{ route('tagihan.index') }}" method="GET" class="form-inline m-0" style="gap: 5px;">
+          <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari siswa / status..." value="{{ request('search') }}">
+          <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Cari</button>
+        </form>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -98,7 +102,7 @@
             <tbody>
               @forelse($tagihan as $item)
               <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td>{{ $tagihan->firstItem() + $loop->index }}</td>
                 <td>{{ $item->siswa->nama_siswa ?? '-' }}</td>
                 <td>Rp {{ number_format($item->jumlah, 0, ',', '.') }}</td>
                 <td>{{ $item->tanggal_jatuh_tempo }}</td>
@@ -123,6 +127,9 @@
               @endforelse
             </tbody>
           </table>
+        </div>
+        <div class="mt-4">
+          {{ $tagihan->withQueryString()->links() }}
         </div>
       </div>
     </div>

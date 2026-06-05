@@ -147,6 +147,13 @@
 
 <x-card title="Data Guru">
 
+<div class="mb-3 d-flex justify-content-end">
+  <form action="{{ route('guru.index') }}" method="GET" class="form-inline" style="gap: 5px;">
+    <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama / no WA..." value="{{ request('search') }}">
+    <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Cari</button>
+  </form>
+</div>
+
 <div class="table-responsive">
 
 <table class="table table-bordered table-hover">
@@ -172,7 +179,7 @@
 
     <tr>
 
-      <td>{{ $loop->iteration }}</td>
+      <td>{{ $guru->firstItem() + $loop->index }}</td>
 
       <td>{{ $row->nama_guru }}</td>
 
@@ -261,6 +268,10 @@
 
 </table>
 
+</div>
+
+<div class="mt-4">
+  {{ $guru->withQueryString()->links() }}
 </div>
 
 </x-card>

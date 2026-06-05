@@ -129,6 +129,13 @@
 {{-- TABEL --}}
 <x-card title="Data Lengkap Siswa">
 
+<div class="mb-3 d-flex justify-content-end">
+  <form action="{{ route('siswa.index') }}" method="GET" class="form-inline" style="gap: 5px;">
+    <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama / no WA..." value="{{ request('search') }}">
+    <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Cari</button>
+  </form>
+</div>
+
 <x-table>
 
 <x-slot name="thead">
@@ -146,7 +153,7 @@
 @forelse($siswa as $row)
 <tr>
 
-  <td>{{ $loop->iteration }}</td>
+  <td>{{ $siswa->firstItem() + $loop->index }}</td>
 
 
   <td>
@@ -245,6 +252,10 @@
 @endforelse
 
 </x-table>
+
+<div class="mt-4">
+  {{ $siswa->withQueryString()->links() }}
+</div>
 
 </x-card>
 

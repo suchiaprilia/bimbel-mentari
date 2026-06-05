@@ -134,6 +134,10 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'loginProses']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/ubah-password', [AuthController::class, 'ubahPassword'])->middleware('auth');
+Route::get('/profil', function () {
+    if (auth()->user()->level != 'admin') return redirect('/');
+    return view('profil_admin');
+})->middleware('auth')->name('admin.profil');
 
 
 //halaman siswa user

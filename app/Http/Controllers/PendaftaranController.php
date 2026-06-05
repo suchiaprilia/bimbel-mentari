@@ -14,9 +14,15 @@ use Illuminate\Http\Request;
 
 class PendaftaranController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pendaftarans = Pendaftaran::latest()->get();
+        $search = $request->query('search');
+
+        $pendaftarans = Pendaftaran::when($search, function($q) use ($search) {
+            $q->where('nama_siswa', 'like', "%{$search}%")
+              ->orWhere('no_whatsapp', 'like', "%{$search}%")
+              ->orWhere('kode_pendaftaran', 'like', "%{$search}%");
+        })->latest()->paginate(10);
 
         return view('pendaftaran', compact('pendaftarans'));
     }

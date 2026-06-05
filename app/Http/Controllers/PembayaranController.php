@@ -11,37 +11,69 @@ use Illuminate\Http\Request;
 
 class PembayaranController extends Controller
 {
-    public function tagihan()
+    public function tagihan(Request $request)
     {
+        $search = $request->query('search');
+        
+        $tagihan = Pembayaran::with('siswa')
+            ->when($search, function($q) use ($search) {
+                $q->whereHas('siswa', function($q) use ($search) {
+                    $q->where('nama_siswa', 'like', "%{$search}%");
+                })->orWhere('status', 'like', "%{$search}%");
+            })
+            ->orderBy('tanggal_jatuh_tempo', 'asc')
+            ->paginate(10);
+
         return view('tagihan', [
-            'tagihan' => Pembayaran::with('siswa')->orderBy('tanggal_jatuh_tempo', 'asc')->get(),
+            'tagihan' => $tagihan,
             'siswa' => Siswa::all(),
             'editTagihan' => null
         ]);
     }
 
-    public function tagihanEdit($id)
+    public function tagihanEdit(Request $request, $id)
     {
+        $search = $request->query('search');
+        
+        $tagihan = Pembayaran::with('siswa')
+            ->when($search, function($q) use ($search) {
+                $q->whereHas('siswa', function($q) use ($search) {
+                    $q->where('nama_siswa', 'like', "%{$search}%");
+                })->orWhere('status', 'like', "%{$search}%");
+            })
+            ->orderBy('tanggal_jatuh_tempo', 'asc')
+            ->paginate(10);
+
         return view('tagihan', [
-            'tagihan' => Pembayaran::with('siswa')->orderBy('tanggal_jatuh_tempo', 'asc')->get(),
+            'tagihan' => $tagihan,
             'siswa' => Siswa::all(),
             'editTagihan' => Pembayaran::findOrFail($id)
         ]);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $pembayaran = Pembayaran::with('siswa')
-            ->orderBy('tanggal_jatuh_tempo', 'asc')
-            ->get();
+        $pembayaranQuery = Pembayaran::with('siswa')
+            ->orderBy('tanggal_jatuh_tempo', 'asc');
 
+        $allPembayaran = $pembayaranQuery->get();
         $summary = [
-            'totalTagihan' => $pembayaran->sum('jumlah'),
-            'belum' => $pembayaran->where('status', 'Belum')->sum('jumlah'),
-            'menunggu' => $pembayaran->where('status', 'Menunggu')->sum('jumlah'),
-            'lunas' => $pembayaran->where('status', 'Lunas')->sum('jumlah'),
-            'count' => $pembayaran->count(),
+            'totalTagihan' => $allPembayaran->sum('jumlah'),
+            'belum' => $allPembayaran->where('status', 'Belum')->sum('jumlah'),
+            'menunggu' => $allPembayaran->where('status', 'Menunggu')->sum('jumlah'),
+            'lunas' => $allPembayaran->where('status', 'Lunas')->sum('jumlah'),
+            'count' => $allPembayaran->count(),
         ];
+
+        $search = $request->query('search');
+        $pembayaran = Pembayaran::with('siswa')
+            ->when($search, function($q) use ($search) {
+                $q->whereHas('siswa', function($q) use ($search) {
+                    $q->where('nama_siswa', 'like', "%{$search}%");
+                })->orWhere('status', 'like', "%{$search}%");
+            })
+            ->orderBy('tanggal_jatuh_tempo', 'asc')
+            ->paginate(10);
 
         return view('pembayaran', [
             'pembayaran' => $pembayaran,
@@ -51,21 +83,31 @@ class PembayaranController extends Controller
         ]);
     }
 
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $editPembayaran = Pembayaran::findOrFail($id);
 
-        $pembayaran = Pembayaran::with('siswa')
-            ->orderBy('tanggal_jatuh_tempo', 'asc')
-            ->get();
+        $pembayaranQuery = Pembayaran::with('siswa')
+            ->orderBy('tanggal_jatuh_tempo', 'asc');
 
+        $allPembayaran = $pembayaranQuery->get();
         $summary = [
-            'totalTagihan' => $pembayaran->sum('jumlah'),
-            'belum' => $pembayaran->where('status', 'Belum')->sum('jumlah'),
-            'menunggu' => $pembayaran->where('status', 'Menunggu')->sum('jumlah'),
-            'lunas' => $pembayaran->where('status', 'Lunas')->sum('jumlah'),
-            'count' => $pembayaran->count(),
+            'totalTagihan' => $allPembayaran->sum('jumlah'),
+            'belum' => $allPembayaran->where('status', 'Belum')->sum('jumlah'),
+            'menunggu' => $allPembayaran->where('status', 'Menunggu')->sum('jumlah'),
+            'lunas' => $allPembayaran->where('status', 'Lunas')->sum('jumlah'),
+            'count' => $allPembayaran->count(),
         ];
+
+        $search = $request->query('search');
+        $pembayaran = Pembayaran::with('siswa')
+            ->when($search, function($q) use ($search) {
+                $q->whereHas('siswa', function($q) use ($search) {
+                    $q->where('nama_siswa', 'like', "%{$search}%");
+                })->orWhere('status', 'like', "%{$search}%");
+            })
+            ->orderBy('tanggal_jatuh_tempo', 'asc')
+            ->paginate(10);
 
         return view('pembayaran', [
             'pembayaran' => $pembayaran,

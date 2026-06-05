@@ -328,6 +328,11 @@
                 <span>Notifikasi</span>
             </a>
 
+            <a href="/profil" class="{{ request()->is('profil') ? 'active' : '' }}">
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Profil Admin</span>
+            </a>
+
             <form action="/logout" method="POST" id="logout-form">
                 @csrf
                 <button type="button" class="logout" onclick="confirmLogout(event)">
