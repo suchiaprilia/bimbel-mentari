@@ -6,7 +6,7 @@
 @section('konten')
 
 {{-- FORM --}}
-<x-card title="{{ $editKelas ? 'Edit Kelas' : 'Tambah Kelas' }}" collapse="true" id="formKelas">
+<x-card title="{{ $editKelas ? 'Edit Kelas' : 'Tambah Kelas' }}" collapse="true" :show="$editKelas ? true : false" id="formKelas">
 
 <form 
   action="{{ $editKelas ? route('kelas.update', $editKelas->id) : route('kelas.store') }}" 

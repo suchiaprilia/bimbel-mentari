@@ -6,7 +6,7 @@
 @section('konten')
 
 {{-- FORM --}}
-<x-card title="{{ $editMapel ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran' }}" collapse="true" id="formMapel">
+<x-card title="{{ $editMapel ? 'Edit Mata Pelajaran' : 'Tambah Mata Pelajaran' }}" collapse="true" :show="$editMapel ? true : false" id="formMapel">
 
 <form 
   action="{{ $editMapel ? route('mapel.update', $editMapel->id_mapel) : route('mapel.store') }}" 

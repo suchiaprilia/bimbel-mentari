@@ -5,7 +5,7 @@
 
 @section('konten')
 
-<x-card title="{{ $editGuru ? 'Edit Guru' : 'Tambah Guru' }}" collapse="true" id="formGuru">
+<x-card title="{{ $editGuru ? 'Edit Guru' : 'Tambah Guru' }}" collapse="true" :show="$editGuru ? true : false" id="formGuru">
 
 <form 
   action="{{ $editGuru ? route('guru.update', $editGuru->id) : route('guru.store') }}" 

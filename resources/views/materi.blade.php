@@ -5,7 +5,7 @@
 
 @section('konten')
 
-<x-card title="{{ $editMateri ? 'Edit Materi' : 'Tambah Materi' }}" collapse="true" id="formMateri">
+<x-card title="{{ $editMateri ? 'Edit Materi' : 'Tambah Materi' }}" collapse="true" :show="$editMateri ? true : false" id="formMateri">
 
 <form 
   action="{{ $editMateri ? route('materi.update', $editMateri->id) : route('materi.store') }}"

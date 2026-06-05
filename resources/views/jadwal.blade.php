@@ -14,7 +14,7 @@
 </style>
 
 {{-- FORM --}}
-<x-card title="{{ $editJadwal ? 'Edit Jadwal' : 'Tambah Jadwal' }}" collapse="true" id="formJadwal">
+<x-card title="{{ $editJadwal ? 'Edit Jadwal' : 'Tambah Jadwal' }}" collapse="true" :show="$editJadwal ? true : false" id="formJadwal">
 
 <form 
     action="{{ $editJadwal ? route('jadwal.update', $editJadwal->id_jadwal) : route('jadwal.store') }}" 
