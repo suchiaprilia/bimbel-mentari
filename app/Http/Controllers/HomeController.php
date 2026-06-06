@@ -10,6 +10,11 @@ use App\Models\Kelas;
 
 class HomeController extends Controller
 {
+    // ====================================================
+    // [CORE-LOGIC] METHOD INDEX (RENDERING DASHBOARD)
+    // Menghitung metrik agregat untuk ditampilkan pada view beranda.
+    // Memproses data siswa, guru, jadwal, dan chart status pembayaran.
+    // ====================================================
     public function index()
     {
         $jumlahSiswa = Siswa::count();

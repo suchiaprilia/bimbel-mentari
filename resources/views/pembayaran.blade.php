@@ -12,12 +12,21 @@
 @endif
 
 <div class="mb-3 d-flex justify-content-between align-items-center">
+  {{-- ====================================================
+       [UI-CONFIG] KOMPONEN TOMBOL PENGINGAT MANUAL
+       Trigger untuk menjalankan command reminder melalui HTTP request.
+  ==================================================== --}}
   <form action="{{ route('pembayaran.reminder') }}" method="POST" class="d-inline">
     @csrf
     <button type="submit" class="btn btn-warning btn-sm">
       Kirim Pengingat Pembayaran WA
     </button>
   </form>
+
+  {{-- ====================================================
+       [UI-CONFIG] KOMPONEN TOMBOL TAMBAH DATA (CREATE)
+       Navigasi untuk membuat entri tagihan baru.
+  ==================================================== --}}
   <a href="{{ route('tagihan.index') }}" class="btn btn-info btn-sm">
     <i class="fas fa-plus-circle"></i> Buat Tagihan Baru
   </a>
@@ -34,6 +43,10 @@
 </div>
 
 <div class="table-responsive">
+{{-- ====================================================
+     [UI-CONFIG] STRUKTUR TABEL DATA PEMBAYARAN
+     Pengaturan header (th) dan iterasi baris (td) untuk data transaksi.
+==================================================== --}}
 <table class="table table-hover align-middle">
   <thead class="bg-light">
     <tr>
@@ -57,6 +70,10 @@
       <td>Rp {{ number_format($row->jumlah,0,',','.') }}</td>
       <td>{{ ucfirst($row->metode_pembayaran) }}</td>
 
+      {{-- ====================================================
+           [UI-CONFIG] KOMPONEN BADGE STATUS
+           Pewarnaan dinamis berdasarkan enum status pembayaran.
+      ==================================================== --}}
       <td>
         <span class="badge 
           {{ $row->status == 'Lunas' ? 'badge-success' : 

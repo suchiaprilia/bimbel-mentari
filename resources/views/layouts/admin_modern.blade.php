@@ -32,10 +32,13 @@
             min-height: 100vh;
         }
 
-        /* SIDEBAR */
+        /* ====================================================
+           [UI-CONFIG] PENGATURAN WARNA SIDEBAR
+           Ubah nilai background di bawah untuk mengganti tema warna dasar.
+        ==================================================== */
         .sidebar {
             width: 280px;
-            background: #003b70;
+            background: #003b70; /* <-- Nilai warna hex */
             padding: 30px 20px;
             color: white;
             position: fixed;
@@ -101,11 +104,15 @@
             font-size: 14px;
         }
 
+        /* ====================================================
+           [UI-CONFIG] EFEK HOVER PADA MENU SIDEBAR
+           Menentukan perubahan visual saat kursor mengarah ke menu.
+        ==================================================== */
         .menu a:hover,
         .menu a.active {
-            background: #ffc107;
-            color: #073763;
-            transform: translateX(3px);
+            background: #ffc107; /* Warna latar aktif */
+            color: #073763; /* Warna teks aktif */
+            transform: translateX(3px); /* Jarak geser efek transisi */
         }
 
         .logout {
@@ -163,8 +170,12 @@
             padding: 20px !important;
         }
 
+        /* ====================================================
+           [UI-CONFIG] VARIABEL WARNA BUTTON UTAMA
+           Modifikasi color palette untuk button global di sini.
+        ==================================================== */
         .btn-success {
-            background-color: #10b981 !important;
+            background-color: #10b981 !important; /* Warna hijau sukses */
             border-color: #10b981 !important;
             border-radius: 12px !important;
             padding: 10px 20px !important;
@@ -172,13 +183,13 @@
         }
 
         .btn-primary {
-            background-color: #003b70 !important;
+            background-color: #003b70 !important; /* Warna biru primer */
             border-color: #003b70 !important;
             border-radius: 12px !important;
         }
         
         .btn-info {
-            background-color: #0066cc !important;
+            background-color: #0066cc !important; /* Warna biru info */
             border-color: #0066cc !important;
             border-radius: 12px !important;
         }
@@ -248,7 +259,11 @@
             </div>
         </div>
 
-        {{-- MENU --}}
+        {{-- ====================================================
+             [UI-LAYOUT] NAVIGASI SIDEBAR
+             Gunakan tag <a> di bawah untuk mengatur ulang atau 
+             menambah/menghapus urutan menu aplikasi.
+        ==================================================== --}}
         <div class="menu">
             <a href="/beranda" class="{{ request()->is('beranda') ? 'active' : '' }}">
                 <i class="fa-solid fa-gauge-high"></i>
@@ -387,6 +402,11 @@
         </div>
         @endif
 
+        {{-- ====================================================
+             [CORE-VIEW] RENDER KONTEN UTAMA
+             Titik injeksi untuk merender konten dari view anak
+             seperti dashboard, form, dan tabel data master.
+        ==================================================== --}}
         @yield('konten')
         @yield('content')
 

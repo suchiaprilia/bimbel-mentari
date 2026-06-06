@@ -112,7 +112,10 @@
 
 <div class="container-fluid">
 
-    {{-- BANNER --}}
+    {{-- ====================================================
+         [UI-CONFIG] KOTAK UCAPAN SELAMAT DATANG (BANNER)
+         Komponen teks sambutan dinamis di halaman utama.
+    ==================================================== --}}
     <div class="welcome-banner">
         <div class="row align-items-center">
             <div class="col-md-9">
@@ -125,7 +128,11 @@
         </div>
     </div>
 
-    {{-- QUICK STATS --}}
+    {{-- ====================================================
+         [UI-CONFIG] KARTU STATISTIK RINGKASAN
+         Pengaturan visual untuk icon dan background metrics atas.
+         Gunakan class icon-siswa, icon-guru, dst untuk merubah gaya.
+    ==================================================== --}}
     <div class="row mb-3">
         <div class="col-lg-3 col-6 mb-3">
             <div class="stats-card">
@@ -154,7 +161,11 @@
     </div>
 
     <div class="row">
-        {{-- GRAFIK PEMBAYARAN --}}
+        {{-- ====================================================
+             [UI-CONFIG] CONTAINER GRAFIK STATUS PEMBAYARAN
+             Pembungkus kanvas grafik donat. Parameter data & warna
+             diinisiasi melalui Chart.js di bagian bawah script.
+        ==================================================== --}}
         <div class="col-xl-6 mb-4">
             <div class="content-card">
                 <div class="card-header-modern">
@@ -245,7 +256,10 @@
 
 </div>
 
-{{-- CHART --}}
+{{-- ====================================================
+     [UI-SCRIPT] INISIALISASI CHART.JS
+     Blok skrip untuk rendering visualisasi data secara asinkron.
+==================================================== --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
@@ -267,6 +281,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         {{ $k->siswa_count }},
                     @endforeach
                 ],
+                // [UI-CONFIG] Konfigurasi Warna Grafik Batang:
                 backgroundColor: '#003b70',
                 borderRadius: 8,
                 barThickness: 25,
@@ -296,6 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     {{ $chartPembayaran['Menunggu'] }},
                     {{ $chartPembayaran['Belum'] }}
                 ],
+                // [UI-CONFIG] Palet Warna Grafik Donat (Lunas, Menunggu, Belum):
                 backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
                 borderWidth: 0,
                 hoverOffset: 4

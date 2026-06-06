@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class SiswaController extends Controller
 {
+    // ====================================================
+    // [CORE-LOGIC] METHOD INDEX (READ)
+    // Mengambil dataset siswa dengan filter search dan pagination.
+    // ====================================================
     public function index(Request $request)
     {
         $search = $request->query('search');
@@ -29,6 +33,11 @@ class SiswaController extends Controller
         ]);
     }
 
+    // ====================================================
+    // [CORE-LOGIC] METHOD STORE (CREATE)
+    // Validasi request dan proses insert data siswa ke database.
+    // Pengaturan password default di-hash pada blok ini.
+    // ====================================================
     public function store(Request $request)
     {
         $request->validate([
@@ -96,6 +105,10 @@ class SiswaController extends Controller
         ]);
     }
 
+    // ====================================================
+    // [CORE-LOGIC] METHOD UPDATE
+    // Memperbarui atribut record siswa berdasarkan request form.
+    // ====================================================
     public function update(Request $request, $id)
     {
         $request->validate([

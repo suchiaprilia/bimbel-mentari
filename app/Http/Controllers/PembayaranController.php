@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 
 class PembayaranController extends Controller
 {
+    // ====================================================
+    // [CORE-LOGIC] METHOD RENDER FORM TAGIHAN (CREATE)
+    // Menyiapkan data master siswa untuk input tagihan baru.
+    // ====================================================
     public function tagihan(Request $request)
     {
         $search = $request->query('search');
@@ -51,6 +55,10 @@ class PembayaranController extends Controller
         ]);
     }
 
+    // ====================================================
+    // [CORE-LOGIC] METHOD INDEX (READ)
+    // Query daftar pembayaran dengan fitur search dan pagination.
+    // ====================================================
     public function index(Request $request)
     {
         $pembayaranQuery = Pembayaran::with('siswa')
@@ -159,6 +167,10 @@ class PembayaranController extends Controller
         return redirect('/tagihan')->with('success', 'Tagihan berhasil dihapus.');
     }
 
+    // ====================================================
+    // [CORE-LOGIC] METHOD STORE (CREATE)
+    // Validasi payload request dan insert record ke database.
+    // ====================================================
     public function store(Request $request)
     {
         $request->validate([
@@ -278,6 +290,10 @@ class PembayaranController extends Controller
         return redirect('/pembayaran');
     }
 
+    // ====================================================
+    // [CORE-LOGIC] METHOD VERIFIKASI PEMBAYARAN (UPDATE)
+    // Mengubah status pembayaran dari pending menjadi lunas.
+    // ====================================================
     public function verifikasi($id)
     {
         $pembayaran = Pembayaran::findOrFail($id);
