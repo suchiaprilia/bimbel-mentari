@@ -16,8 +16,15 @@ class PaymentReminderService
         $this->whatsApp = $whatsApp ?? new WhatsAppService();
     }
 
+    // ====================================================
+    // [CORE-LOGIC] SERVICE PENYUSUN PESAN PENGINGAT
+    // Dipanggil oleh cron job atau tombol manual. 
+    // Mengambil data dari scopeDueReminders(), lalu menyusun teks pesan WA 
+    // berdasarkan sisa hari jatuh tempo.
+    // ====================================================
     public function sendDueReminders(): array
     {
+        // 1. Ambil data tagihan yang lolos filter anti-spam
         $payments = Pembayaran::with('siswa')
             ->dueReminders()
             ->get();
@@ -46,9 +53,11 @@ class PaymentReminderService
             $amount = number_format($payment->jumlah, 0, ',', '.');
             $nama = $payment->siswa->nama_siswa;
 
-            // Buat pesan berdasarkan kondisi
+            // ====================================================
+            // [CORE-LOGIC] PENYUSUNAN KATA (COPYWRITING) PESAN WA
+            // ====================================================
             if ($sistiHariLagi > 0) {
-                // Belum jatuh tempo - kirim pengingat "H-2"
+                // Skenario A: Belum jatuh tempo - kirim pengingat "H-X"
                 $message = "⚠️ *Pengingat Pembayaran Bimbingan Belajar*\n\n" .
                     "Halo Bapak/Ibu/Wali dari *{$nama}*,\n\n" .
                     "Kami menginformasikan bahwa tagihan pembayaran bimbingan belajar bulan *{$bulan}* sebesar *Rp{$amount}* akan jatuh tempo dalam *{$sistiHariLagi} hari lagi*, tepatnya pada tanggal *{$dueDateFormatted}*.\n\n" .
@@ -62,7 +71,7 @@ class PaymentReminderService
                     "Setelah melakukan pembayaran melalui transfer, mohon mengirimkan bukti pembayaran kepada admin untuk proses konfirmasi.\n\n" .
                     "Mohon segera lakukan pembayaran sebelum jatuh tempo. Terima kasih atas perhatian dan kerja samanya.";
             } else {
-                // Sudah lewat jatuh tempo
+                // Skenario B: Sudah lewat jatuh tempo (Keterlambatan)
                 $hariTerlambat = abs($sistiHariLagi);
                 $message = "🔴 *Tagihan Jatuh Tempo - Bimbingan Belajar*\n\n" .
                     "Halo Bapak/Ibu/Wali dari *{$nama}*,\n\n" .
@@ -78,8 +87,10 @@ class PaymentReminderService
                     "Harap segera melakukan pembayaran atau hubungi admin. Terima kasih atas perhatian dan kerja samanya.";
             }
 
+            // 2. Eksekusi pengiriman ke WhatsApp API
             $sent = $this->whatsApp->sendMessage($payment->siswa->no_whatsapp, $message);
 
+            // 3. Catat riwayat pengiriman ke tabel notifikasi (Log)
             Notifikasi::create([
                 'id_pembayaran' => $payment->id,
                 'pesan' => $message,

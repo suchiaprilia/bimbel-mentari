@@ -31,19 +31,28 @@ class Pembayaran extends Model
         return $this->hasMany(Notifikasi::class, 'id_pembayaran');
     }
 
+    // ====================================================
+    // [CORE-LOGIC] FILTER ANTI-SPAM & PENJADWALAN
+    // Fungsi ini menyaring data dari database khusus untuk tagihan yang:
+    // 1. Statusnya masih Belum/Menunggu (belum lunas)
+    // 2. Waktu jatuh temponya kurang dari atau sama dengan 2 hari ke depan
+    // 3. Batas maksimal pengiriman pengingat belum mencapai 3 kali
+    // 4. Belum dikirimi pesan HARI INI (Filter Anti-Spam Utama)
+    // ====================================================
     public function scopeDueReminders($query)
     {
-        // Kirim reminder jika jatuh tempo <= 2 hari ke depan (termasuk yang sudah lewat)
+        // Hitung batas waktu: Hari ini + 2 Hari ke depan (jam 23:59:59)
         $batasAkhir = Carbon::now()->addDays(2)->endOfDay();
 
         return $query->whereIn('status', ['Belum', 'Menunggu'])
             ->whereDate('tanggal_jatuh_tempo', '<=', $batasAkhir)
             ->where(function ($query) {
+                // Syarat: Total reminder yang pernah dikirim harus kurang dari 3
                 $query->where('reminder_count', '<', 3)
                       ->orWhereNull('reminder_count');
             })
-            // Hindari kirim reminder lebih dari sekali per hari
             ->where(function ($query) {
+                // Syarat: Jangan kirim jika kolom last_reminder_sent_at adalah hari ini
                 $query->whereNull('last_reminder_sent_at')
                       ->orWhereDate('last_reminder_sent_at', '<', Carbon::today());
             });

@@ -20,5 +20,10 @@ Artisan::command('pembayaran:reminder', function () {
     ));
 })->purpose('Send overdue payment reminders via WhatsApp (Fonnte API)');
 
-// Jadwalkan kirim reminder otomatis setiap hari jam 08.00 pagi
+// ====================================================
+// [CORE-LOGIC] CRON JOB / TASK SCHEDULING
+// Titik pemicu (trigger) untuk menjalankan service pengingat tagihan.
+// Waktu eksekusi diatur menggunakan method dailyAt().
+// Pastikan zona waktu (timezone) di config/app.php sudah benar.
+// ====================================================
 Schedule::command('pembayaran:reminder')->dailyAt('08:00');
