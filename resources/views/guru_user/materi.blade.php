@@ -1,4 +1,4 @@
-﻿@extends('guru_user.layout')
+@extends('guru_user.layout')
 
 @section('content')
     <style>
@@ -264,13 +264,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="id_mapel">Mata Pelajaran</label>
-                        <select id="id_mapel" name="id_mapel" required>
-                            <option value="">Pilih Mapel</option>
-                            @foreach($mapel as $m)
-                                <option value="{{ $m->id_mapel }}" {{ old('id_mapel') == $m->id_mapel ? 'selected' : '' }}>{{ $m->nama_mapel }}</option>
-                            @endforeach
-                        </select>
+                        <label for="nama_mapel">Mata Pelajaran</label>
+                        <input type="text" id="nama_mapel" class="form-control" readonly value="{{ $guru->mapel->nama_mapel ?? 'Mapel belum diatur' }}" style="background: #e9ecef; cursor: not-allowed;">
                     </div>
 
                     <div class="form-group">

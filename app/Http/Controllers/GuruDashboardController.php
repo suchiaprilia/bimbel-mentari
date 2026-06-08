@@ -92,7 +92,6 @@ class GuruDashboardController extends Controller
         $request->validate([
             'judul_materi' => 'required|string|max:150',
             'id_kelas' => 'required',
-            'id_mapel' => 'required',
             'deskripsi' => 'nullable|string',
             'file_materi' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,zip,rar,jpg,jpeg,png|max:5120',
         ]);
@@ -104,7 +103,7 @@ class GuruDashboardController extends Controller
         Materi::create([
             'id_guru' => $guru->id,
             'id_kelas' => $request->id_kelas,
-            'id_mapel' => $request->id_mapel,
+            'id_mapel' => $guru->id_mapel,
             'judul_materi' => $request->judul_materi,
             'deskripsi' => $request->deskripsi,
             'file_materi' => $path,
@@ -191,7 +190,6 @@ class GuruDashboardController extends Controller
         $request->validate([
             'judul_materi' => 'required|string|max:150',
             'id_kelas' => 'required',
-            'id_mapel' => 'required',
             'deskripsi' => 'nullable|string',
             'file_materi' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,zip,rar,jpg,jpeg,png|max:5120',
         ]);
@@ -210,7 +208,7 @@ class GuruDashboardController extends Controller
 
         $data = [
             'id_kelas' => $request->id_kelas,
-            'id_mapel' => $request->id_mapel,
+            'id_mapel' => $guru->id_mapel,
             'judul_materi' => $request->judul_materi,
             'deskripsi' => $request->deskripsi,
         ];
