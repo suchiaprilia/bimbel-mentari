@@ -9,7 +9,7 @@ class ProgramController extends Controller
         $programs = [
             'sd' => [
                 'nama' => 'Program SD',
-                'kelas' => 'Kelas 4 - 6',
+                'kelas' => 'Kelas 1 - 6',
                 'icon' => 'fas fa-child',
                 'deskripsi' => 'Program SD dirancang untuk membantu siswa sekolah dasar memahami pelajaran utama dengan cara yang mudah, menyenangkan, dan terarah.',
                 'materi' => [

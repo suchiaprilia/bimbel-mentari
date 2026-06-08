@@ -26,4 +26,4 @@ Artisan::command('pembayaran:reminder', function () {
 // Waktu eksekusi diatur menggunakan method dailyAt().
 // Pastikan zona waktu (timezone) di config/app.php sudah benar.
 // ====================================================
-Schedule::command('pembayaran:reminder')->dailyAt('20:40');
+Schedule::command('pembayaran:reminder')->dailyAt('08:00');

@@ -62,6 +62,42 @@ class JadwalController extends Controller
             'siswa_id.required' => 'Siswa wajib dipilih.',
         ]);
 
+        // ====================================================
+        // [CORE-LOGIC] VALIDASI BENTROK JADWAL GURU
+        // Mengecek apakah guru memiliki jadwal pada tanggal dan jam yang beririsan
+        // ====================================================
+        $bentrokGuru = Jadwal::where('id_guru', $request->id_guru)
+            ->where('tanggal', $request->tanggal)
+            ->where(function($q) use ($request) {
+                $q->where('jam_mulai', '<', $request->jam_selesai)
+                  ->where('jam_selesai', '>', $request->jam_mulai);
+            })->first();
+
+        if ($bentrokGuru) {
+            return redirect()->back()->withInput()->with('error', 'Gagal: Guru yang dipilih sudah memiliki jadwal mengajar pada waktu tersebut.');
+        }
+
+        // ====================================================
+        // [CORE-LOGIC] VALIDASI BENTROK JADWAL SISWA
+        // Mengecek apakah ada siswa yang jadwalnya beririsan
+        // ====================================================
+        $jadwalBentrokIds = Jadwal::where('tanggal', $request->tanggal)
+            ->where(function($q) use ($request) {
+                $q->where('jam_mulai', '<', $request->jam_selesai)
+                  ->where('jam_selesai', '>', $request->jam_mulai);
+            })->pluck('id_jadwal');
+
+        if ($jadwalBentrokIds->isNotEmpty()) {
+            $siswaBentrok = DB::table('jadwal_siswa')
+                ->whereIn('jadwal_id', $jadwalBentrokIds)
+                ->whereIn('siswa_id', $request->siswa_id)
+                ->first();
+
+            if ($siswaBentrok) {
+                return redirect()->back()->withInput()->with('error', 'Gagal: Terdapat siswa yang sudah memiliki jadwal lain pada waktu tersebut.');
+            }
+        }
+
         DB::beginTransaction();
 
         try {
@@ -144,6 +180,43 @@ class JadwalController extends Controller
             'jam_selesai' => 'required|after:jam_mulai',
             'siswa_id' => 'required|array',
         ]);
+
+        // ====================================================
+        // [CORE-LOGIC] VALIDASI BENTROK JADWAL GURU (SAAT UPDATE)
+        // Mengecek kecuali jadwal dirinya sendiri (id_jadwal != $id)
+        // ====================================================
+        $bentrokGuru = Jadwal::where('id_guru', $request->id_guru)
+            ->where('tanggal', $request->tanggal)
+            ->where('id_jadwal', '!=', $id)
+            ->where(function($q) use ($request) {
+                $q->where('jam_mulai', '<', $request->jam_selesai)
+                  ->where('jam_selesai', '>', $request->jam_mulai);
+            })->first();
+
+        if ($bentrokGuru) {
+            return redirect()->back()->withInput()->with('error', 'Gagal: Guru yang dipilih sudah memiliki jadwal mengajar pada waktu tersebut.');
+        }
+
+        // ====================================================
+        // [CORE-LOGIC] VALIDASI BENTROK JADWAL SISWA (SAAT UPDATE)
+        // ====================================================
+        $jadwalBentrokIds = Jadwal::where('tanggal', $request->tanggal)
+            ->where('id_jadwal', '!=', $id)
+            ->where(function($q) use ($request) {
+                $q->where('jam_mulai', '<', $request->jam_selesai)
+                  ->where('jam_selesai', '>', $request->jam_mulai);
+            })->pluck('id_jadwal');
+
+        if ($jadwalBentrokIds->isNotEmpty()) {
+            $siswaBentrok = DB::table('jadwal_siswa')
+                ->whereIn('jadwal_id', $jadwalBentrokIds)
+                ->whereIn('siswa_id', $request->siswa_id)
+                ->first();
+
+            if ($siswaBentrok) {
+                return redirect()->back()->withInput()->with('error', 'Gagal: Terdapat siswa yang sudah memiliki jadwal lain pada waktu tersebut.');
+            }
+        }
 
         DB::beginTransaction();
 
