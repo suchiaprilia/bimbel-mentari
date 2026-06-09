@@ -29,6 +29,14 @@ Route::get('/beranda', function () {
     return view('beranda');
 });
 
+Route::get('/perbaiki-storage', function () {
+    if (file_exists(public_path('storage'))) {
+        @unlink(public_path('storage')); 
+    }
+    \Illuminate\Support\Facades\Artisan::call('storage:link');
+    return 'SELESAI! Storage berhasil diperbaiki.';
+});
+
 //beranda home
 Route::get('/beranda', [HomeController::class, 'index']);
 Route::get('/program/{slug}', [ProgramController::class, 'show'])->name('program.detail');
