@@ -39,7 +39,7 @@ class PendaftaranPublicController extends Controller
         $request->validate([
             'nama_siswa'  => 'required|string|max:255',
             'nama_ortu'   => 'nullable|string|max:255',
-            'no_whatsapp' => 'required|string|max:20',
+            'no_whatsapp' => 'required|numeric|digits_between:10,15',
             'alamat'      => 'nullable|string',
             'jenjang'     => 'required|string|max:50',
 

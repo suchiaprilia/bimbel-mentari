@@ -517,7 +517,7 @@
 
               <div class="mb-3">
                 <label>No WhatsApp <span class="text-danger">*</span></label>
-                <input type="text" name="no_whatsapp" class="form-control"
+                <input type="number" name="no_whatsapp" class="form-control"
                   value="{{ old('no_whatsapp') }}" placeholder="Contoh: 081234567890" required>
                 <div class="small-note">Nomor WhatsApp digunakan untuk menerima notifikasi atau pengingat pembayaran.</div>
               </div>
