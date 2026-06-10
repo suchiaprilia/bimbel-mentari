@@ -15,6 +15,7 @@ class SiswaController extends Controller
     public function index(Request $request)
     {
         $search = $request->query('search');
+        $filterKelas = $request->query('kelas');
         
         $siswa = Siswa::with('kelas')
             ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id')
@@ -22,6 +23,9 @@ class SiswaController extends Controller
             ->when($search, function($q) use ($search) {
                 $q->where('siswa.nama_siswa', 'like', "%{$search}%")
                   ->orWhere('siswa.no_whatsapp', 'like', "%{$search}%");
+            })
+            ->when($filterKelas, function($q) use ($filterKelas) {
+                $q->where('siswa.id_kelas', $filterKelas);
             })
             ->orderBy('kelas.nama_kelas', 'asc')
             ->paginate(10);

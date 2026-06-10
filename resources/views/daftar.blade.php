@@ -531,7 +531,7 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label>Jenjang</label>
-                  <select name="jenjang" class="form-select">
+                  <select name="jenjang" id="jenjang" class="form-select">
                     <option value="">-- Pilih Jenjang --</option>
                     <option value="SD" {{ $selectedJenjang == 'SD' ? 'selected' : '' }}>SD</option>
                     <option value="SMP" {{ $selectedJenjang == 'SMP' ? 'selected' : '' }}>SMP</option>
@@ -544,14 +544,20 @@
         Pilih Kelas <span class="text-danger">*</span>
     </label>
 
-    <select name="id_kelas"
+    <select name="id_kelas" id="id_kelas"
         class="form-select @error('id_kelas') is-invalid @enderror">
 
         <option value="">-- Pilih Kelas --</option>
 
         @foreach($kelas as $k)
-
-            <option value="{{ $k->id }}"
+            @php
+                $jenjangOpt = '';
+                $num = intval($k->nama_kelas);
+                if($num >= 1 && $num <= 6) $jenjangOpt = 'SD';
+                elseif($num >= 7 && $num <= 9) $jenjangOpt = 'SMP';
+                elseif($num >= 10 && $num <= 12) $jenjangOpt = 'SMA';
+            @endphp
+            <option value="{{ $k->id }}" data-jenjang="{{ $jenjangOpt }}"
                 {{ old('id_kelas') == $k->id ? 'selected' : '' }}>
 
                 {{ $k->nama_kelas }}
@@ -617,6 +623,46 @@
 </div>
 
 
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const jenjangSelect = document.getElementById("jenjang");
+    const kelasSelect = document.getElementById("id_kelas");
+    const kelasOptions = Array.from(kelasSelect.options);
+
+    function filterKelas() {
+      const selectedJenjang = jenjangSelect.value;
+      
+      // Reset selected value jika tidak cocok dengan jenjang baru (kecuali saat pertama dimuat jika ada old value)
+      let currentSelected = kelasSelect.value;
+      let validSelection = false;
+
+      kelasOptions.forEach(option => {
+        if (option.value === "") {
+          option.style.display = "block"; // Selalu tampilkan opsi default
+          return;
+        }
+
+        const optJenjang = option.getAttribute("data-jenjang");
+        if (!selectedJenjang || optJenjang === selectedJenjang) {
+          option.style.display = "block";
+          if(option.value === currentSelected) validSelection = true;
+        } else {
+          option.style.display = "none";
+        }
+      });
+
+      if (!validSelection && currentSelected !== "") {
+         kelasSelect.value = ""; // Reset jika kelas yang sebelumnya dipilih disembunyikan
+      }
+    }
+
+    jenjangSelect.addEventListener("change", filterKelas);
+    
+    // Jalankan sekali saat load untuk mengatur tampilan awal
+    filterKelas();
+  });
+</script>
 
 </body>
 </html>

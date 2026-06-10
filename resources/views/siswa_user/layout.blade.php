@@ -97,10 +97,10 @@
             @endif
 
             <div style="margin-top: 20px;">
-                @if (session('parent_mode'))
+                @if (session('is_parent_mode'))
                     <a href="{{ route('siswa.toggle-parent') }}" class="btn-switch parent-active"><i class="fa-solid fa-user-check"></i> <span>Mode Orang Tua: ON</span></a>
                 @else
-                    <a href="{{ route('siswa.toggle-parent') }}" class="btn-switch"><i class="fa-solid fa-user-group"></i> <span>Akses Orang Tua</span></a>
+                    <a href="#" onclick="promptPin(event)" class="btn-switch"><i class="fa-solid fa-user-group"></i> <span>Akses Orang Tua</span></a>
                 @endif
             </div>
 
@@ -137,6 +137,14 @@
                 document.getElementById('logout-form').submit();
             }
         });
+    }
+
+    function promptPin(e) {
+        e.preventDefault();
+        let pin = prompt("🔐 Keamanan Orang Tua\n\nMasukkan PIN Anda untuk melanjutkan.\n(Petunjuk: PIN adalah 4 digit terakhir nomor WhatsApp yang terdaftar)");
+        if (pin) {
+            window.location.href = "{{ route('siswa.toggle-parent') }}?pin=" + pin;
+        }
     }
 
     // Mengingat posisi scroll sidebar

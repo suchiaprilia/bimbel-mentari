@@ -130,7 +130,15 @@
 <x-card title="Data Lengkap Siswa">
 
 <div class="mb-3 d-flex justify-content-end">
-  <form action="{{ route('siswa.index') }}" method="GET" class="form-inline" style="gap: 5px;">
+  <form action="{{ route('siswa.index') }}" method="GET" class="form-inline d-flex" style="gap: 10px;">
+    <select name="kelas" class="form-control form-control-sm">
+      <option value="">-- Semua Kelas --</option>
+      @foreach($kelas as $k)
+        <option value="{{ $k->id }}" {{ request('kelas') == $k->id ? 'selected' : '' }}>
+          Kelas {{ $k->nama_kelas }}
+        </option>
+      @endforeach
+    </select>
     <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama / no WA..." value="{{ request('search') }}">
     <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Cari</button>
   </form>

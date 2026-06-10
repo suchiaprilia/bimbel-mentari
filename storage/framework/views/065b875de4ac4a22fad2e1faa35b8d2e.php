@@ -1070,7 +1070,7 @@
   <div class="container text-center">
     <div class="hero-badge">
       <i class="fas fa-map-marker-alt"></i>
-      Jl. raya Telkom desa Panggung Baru Rt 01 Rw 01
+      Jl. Raya Telkom Desa Panggung Baru Rt 01 Rw 01
     </div>
 
     <h1 class="hero-title">

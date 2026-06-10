@@ -236,9 +236,29 @@ class SiswaDashboardController extends Controller
         return redirect()->back()->with('success', 'Bukti pembayaran berhasil diupload.');
     }
 
-    public function toggleParent()
+    public function toggleParent(Request $request)
     {
         $current = session('is_parent_mode', false);
+        
+        if (!$current) {
+            // Validasi PIN jika mau masuk mode orang tua
+            $pin = $request->query('pin');
+            $siswa = Siswa::where('id_user', auth()->id())->first();
+            $wa = $siswa->no_whatsapp ?? '';
+            
+            // Mengambil 4 digit terakhir
+            $correctPin = substr($wa, -4);
+            
+            // Jika WA kosong atau kurang dari 4 digit, kita pakai default 1234
+            if (strlen($wa) < 4) {
+                $correctPin = '1234';
+            }
+            
+            if (!$pin || $pin !== $correctPin) {
+                return redirect()->back()->with('error', 'Akses ditolak: PIN Orang Tua (4 digit terakhir WA) salah!');
+            }
+        }
+
         session(['is_parent_mode' => !$current]);
 
         if (!$current) {
