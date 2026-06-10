@@ -9,6 +9,9 @@ use App\Models\MataPelajaran;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\WhatsAppService;
+use App\Models\Notifikasi;
+use Carbon\Carbon;
 
 class JadwalController extends Controller
 {
@@ -125,9 +128,63 @@ class JadwalController extends Controller
 
             DB::commit();
 
+            // AMBIL DATA TAMBAHAN UNTUK PESAN WA
+            $guruLengkap = Guru::with('mapel')->findOrFail($request->id_guru);
+            $kelasLengkap = Kelas::findOrFail($request->id_kelas);
+            $tanggalIndo = Carbon::parse($request->tanggal)->locale('id')->isoFormat('dddd, D MMMM YYYY');
+            
+            $wa = new WhatsAppService();
+
+            // 1. KIRIM NOTIFIKASI KE GURU
+            if (!empty($guruLengkap->no_telepon)) {
+                $pesanGuru = "📅 *Jadwal Mengajar Baru*\n\n" .
+                    "Halo Bapak/Ibu *{$guruLengkap->nama_guru}*,\n" .
+                    "Anda memiliki jadwal mengajar baru di Bimbel Mentari:\n\n" .
+                    "Mata Pelajaran: *" . ($guruLengkap->mapel->nama_mapel ?? '-') . "*\n" .
+                    "Kelas: *{$kelasLengkap->nama_kelas}*\n" .
+                    "Tanggal: *{$tanggalIndo}*\n" .
+                    "Waktu: *{$request->jam_mulai} - {$request->jam_selesai}*\n\n" .
+                    "Mohon persiapkan materi dan hadir tepat waktu. Terima kasih! ✨";
+
+                $terkirimGuru = $wa->sendMessage($guruLengkap->no_telepon, $pesanGuru);
+
+                Notifikasi::create([
+                    'pesan' => $pesanGuru,
+                    'target_phone' => $guruLengkap->no_telepon,
+                    'type' => 'jadwal',
+                    'status_kirim' => $terkirimGuru ? 'Terkirim' : 'Gagal',
+                    'waktu_kirim' => now()
+                ]);
+            }
+
+            // 2. KIRIM NOTIFIKASI KE SEMUA SISWA
+            $siswas = Siswa::whereIn('id', $request->siswa_id)->get();
+            foreach ($siswas as $siswa) {
+                if (!empty($siswa->no_whatsapp)) {
+                    $pesanSiswa = "📅 *Jadwal Belajar Baru*\n\n" .
+                        "Halo *{$siswa->nama_siswa}*,\n" .
+                        "Berikut adalah jadwal belajar baru kamu di Bimbel Mentari:\n\n" .
+                        "Mata Pelajaran: *" . ($guruLengkap->mapel->nama_mapel ?? '-') . "*\n" .
+                        "Guru: *{$guruLengkap->nama_guru}*\n" .
+                        "Tanggal: *{$tanggalIndo}*\n" .
+                        "Waktu: *{$request->jam_mulai} - {$request->jam_selesai}*\n\n" .
+                        "Jangan lupa untuk hadir tepat waktu ya! Semangat belajarnya! ✨";
+
+                    $terkirimSiswa = $wa->sendMessage($siswa->no_whatsapp, $pesanSiswa);
+
+                    Notifikasi::create([
+                        'pesan' => $pesanSiswa,
+                        'target_phone' => $siswa->no_whatsapp,
+                        'type' => 'jadwal',
+                        'status_kirim' => $terkirimSiswa ? 'Terkirim' : 'Gagal',
+                        'waktu_kirim' => now()
+                    ]);
+                }
+            }
+
             return redirect()
                 ->route('jadwal.index')
-                ->with('success', 'Data jadwal berhasil ditambahkan.');
+                ->with('success', 'Data jadwal berhasil ditambahkan dan notifikasi WA telah dikirim.');
 
         } catch (\Exception $e) {
 
