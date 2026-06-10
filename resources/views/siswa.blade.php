@@ -132,7 +132,7 @@
 <div class="mb-3 d-flex justify-content-end">
   <form action="{{ route('siswa.index') }}" method="GET" class="form-inline d-flex flex-wrap" style="gap: 10px; max-width: 100%;">
     
-    <select name="kelas" class="form-select form-select-sm" style="min-width: 130px;">
+    <select name="kelas" class="form-control form-control-sm" style="min-width: 130px;">
       <option value="">-- Semua Kelas --</option>
       @foreach($kelas as $k)
         <option value="{{ $k->id }}" {{ request('kelas') == $k->id ? 'selected' : '' }}>
@@ -141,7 +141,7 @@
       @endforeach
     </select>
 
-    <select name="mapel" class="form-select form-select-sm" style="min-width: 150px;">
+    <select name="mapel" class="form-control form-control-sm" style="min-width: 150px;">
       <option value="">-- Semua Mapel --</option>
       @if(isset($mapel))
         @foreach($mapel as $m)
@@ -152,7 +152,7 @@
       @endif
     </select>
 
-    <select name="status" class="form-select form-select-sm" style="min-width: 130px;">
+    <select name="status" class="form-control form-control-sm" style="min-width: 130px;">
       <option value="">-- Semua Status --</option>
       <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
       <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
