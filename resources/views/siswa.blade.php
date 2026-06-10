@@ -130,8 +130,9 @@
 <x-card title="Data Lengkap Siswa">
 
 <div class="mb-3 d-flex justify-content-end">
-  <form action="{{ route('siswa.index') }}" method="GET" class="form-inline d-flex" style="gap: 10px;">
-    <select name="kelas" class="form-control form-control-sm">
+  <form action="{{ route('siswa.index') }}" method="GET" class="form-inline d-flex flex-wrap" style="gap: 10px; max-width: 100%;">
+    
+    <select name="kelas" class="form-select form-select-sm" style="min-width: 130px;">
       <option value="">-- Semua Kelas --</option>
       @foreach($kelas as $k)
         <option value="{{ $k->id }}" {{ request('kelas') == $k->id ? 'selected' : '' }}>
@@ -139,7 +140,26 @@
         </option>
       @endforeach
     </select>
-    <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama / no WA..." value="{{ request('search') }}">
+
+    <select name="mapel" class="form-select form-select-sm" style="min-width: 150px;">
+      <option value="">-- Semua Mapel --</option>
+      @if(isset($mapel))
+        @foreach($mapel as $m)
+          <option value="{{ $m->id }}" {{ request('mapel') == $m->id ? 'selected' : '' }}>
+            {{ $m->nama_mapel }}
+          </option>
+        @endforeach
+      @endif
+    </select>
+
+    <select name="status" class="form-select form-select-sm" style="min-width: 130px;">
+      <option value="">-- Semua Status --</option>
+      <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+      <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+    </select>
+
+    <input type="text" name="search" class="form-control form-control-sm" placeholder="Cari nama / no WA..." value="{{ request('search') }}" style="min-width: 200px;">
+    
     <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-search"></i> Cari</button>
   </form>
 </div>

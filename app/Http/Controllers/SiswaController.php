@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use App\Models\Kelas;
+use App\Models\MataPelajaran;
 use Illuminate\Http\Request;
 
 class SiswaController extends Controller
@@ -16,6 +17,8 @@ class SiswaController extends Controller
     {
         $search = $request->query('search');
         $filterKelas = $request->query('kelas');
+        $filterMapel = $request->query('mapel');
+        $filterStatus = $request->query('status');
         
         $siswa = Siswa::with('kelas')
             ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id')
@@ -27,12 +30,21 @@ class SiswaController extends Controller
             ->when($filterKelas, function($q) use ($filterKelas) {
                 $q->where('siswa.id_kelas', $filterKelas);
             })
+            ->when($filterStatus, function($q) use ($filterStatus) {
+                $q->where('siswa.status', $filterStatus);
+            })
+            ->when($filterMapel, function($q) use ($filterMapel) {
+                $q->whereHas('mapels', function($q2) use ($filterMapel) {
+                    $q2->where('mata_pelajaran.id', $filterMapel);
+                });
+            })
             ->orderBy('kelas.nama_kelas', 'asc')
             ->paginate(10);
 
         return view('siswa', [
             'siswa' => $siswa,
             'kelas' => Kelas::all(),
+            'mapel' => MataPelajaran::all(),
             'editSiswa' => null
         ]);
     }
@@ -91,6 +103,9 @@ class SiswaController extends Controller
     public function edit(Request $request, $id)
     {
         $search = $request->query('search');
+        $filterKelas = $request->query('kelas');
+        $filterMapel = $request->query('mapel');
+        $filterStatus = $request->query('status');
         
         $siswa = Siswa::with('kelas')
             ->join('kelas', 'siswa.id_kelas', '=', 'kelas.id')
@@ -99,12 +114,24 @@ class SiswaController extends Controller
                 $q->where('siswa.nama_siswa', 'like', "%{$search}%")
                   ->orWhere('siswa.no_whatsapp', 'like', "%{$search}%");
             })
+            ->when($filterKelas, function($q) use ($filterKelas) {
+                $q->where('siswa.id_kelas', $filterKelas);
+            })
+            ->when($filterStatus, function($q) use ($filterStatus) {
+                $q->where('siswa.status', $filterStatus);
+            })
+            ->when($filterMapel, function($q) use ($filterMapel) {
+                $q->whereHas('mapels', function($q2) use ($filterMapel) {
+                    $q2->where('mata_pelajaran.id', $filterMapel);
+                });
+            })
             ->orderBy('kelas.nama_kelas', 'asc')
             ->paginate(10);
 
         return view('siswa', [
             'siswa' => $siswa,
             'kelas' => Kelas::all(),
+            'mapel' => MataPelajaran::all(),
             'editSiswa' => Siswa::findOrFail($id)
         ]);
     }

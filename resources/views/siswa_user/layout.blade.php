@@ -141,10 +141,37 @@
 
     function promptPin(e) {
         e.preventDefault();
-        let pin = prompt("🔐 Keamanan Orang Tua\n\nMasukkan PIN Anda untuk melanjutkan.\n(Petunjuk: PIN adalah 4 digit terakhir nomor WhatsApp yang terdaftar)");
-        if (pin) {
-            window.location.href = "{{ route('siswa.toggle-parent') }}?pin=" + pin;
-        }
+        Swal.fire({
+            title: '<span style="color: #003366;">Akses Keamanan</span>',
+            html: 'Silakan masukkan <b>PIN Orang Tua</b> Anda.<br><small style="color: #666;">(4 digit terakhir nomor WhatsApp terdaftar)</small>',
+            icon: 'info',
+            input: 'password',
+            inputPlaceholder: '••••',
+            inputAttributes: {
+                maxlength: 4,
+                autocapitalize: 'off',
+                autocorrect: 'off',
+                inputmode: 'numeric',
+                style: 'text-align: center; font-size: 24px; letter-spacing: 10px;'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Masuk Mode Orang Tua',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#003366',
+            cancelButtonColor: '#d33',
+            inputValidator: (value) => {
+                if (!value) {
+                    return 'PIN wajib diisi!';
+                }
+                if (value.length < 4) {
+                    return 'PIN harus 4 digit!';
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('siswa.toggle-parent') }}?pin=" + result.value;
+            }
+        });
     }
 
     // Mengingat posisi scroll sidebar
