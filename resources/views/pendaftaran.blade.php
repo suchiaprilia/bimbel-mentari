@@ -83,12 +83,7 @@
 
               {{-- TOLAK --}}
               <form action="{{ route('pendaftaran.tolak', $item->id) }}" method="POST"
-                    class="form-confirm"
-                    data-title="Tolak pendaftaran ini?"
-                    data-text="Status pendaftaran akan diubah menjadi Ditolak."
-                    data-icon="warning"
-                    data-color="#dc3545"
-                    data-btn="Ya, Tolak">
+                    class="form-tolak">
                 @csrf
                 @method('PUT')
                 <button type="submit" class="dropdown-item text-danger">
@@ -122,5 +117,44 @@
 </div>
 
 </x-card>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const formsTolak = document.querySelectorAll('.form-tolak');
+    formsTolak.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Alasan Penolakan',
+                text: 'Berikan alasan kenapa pendaftaran ini ditolak:',
+                input: 'textarea',
+                inputPlaceholder: 'Contoh: Bukti transfer tidak valid...',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Tolak Pendaftaran',
+                cancelButtonText: 'Batal',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Alasan penolakan wajib diisi!';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Buat hidden input untuk alasan
+                    const inputAlasan = document.createElement('input');
+                    inputAlasan.type = 'hidden';
+                    inputAlasan.name = 'alasan';
+                    inputAlasan.value = result.value;
+                    form.appendChild(inputAlasan);
+                    
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
 
 @endsection

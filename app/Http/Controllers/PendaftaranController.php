@@ -127,14 +127,13 @@ class PendaftaranController extends Controller
             );
     }
 
-    public function tolak($id)
+    public function tolak(\Illuminate\Http\Request $request, $id)
     {
         $pendaftaran = Pendaftaran::findOrFail($id);
 
         $pendaftaran->status = 'Ditolak';
 
-        $pendaftaran->keterangan =
-            'Pendaftaran ditolak oleh admin.';
+        $pendaftaran->keterangan = $request->alasan ?? 'Pendaftaran ditolak oleh admin.';
 
         $pendaftaran->save();
 

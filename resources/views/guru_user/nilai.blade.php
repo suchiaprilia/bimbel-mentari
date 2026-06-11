@@ -143,9 +143,14 @@
 
                 <div style="max-width: 400px; margin-bottom: 30px;">
                     <label style="display: block; font-weight: 800; color: #7b8490; font-size: 12px; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px;">Jenis Penilaian</label>
-                    <input type="text" name="jenis_nilai" value="{{ old('jenis_nilai') }}" 
-                           placeholder="Contoh: Ulangan Harian 1, Tugas Akhir, Kuis" 
-                           style="width: 100%; padding: 14px; border-radius: 14px; border: 1px solid #d8e0ea; background: #f8fafc;" required>
+                    <select name="jenis_nilai" style="width: 100%; padding: 14px; border-radius: 14px; border: 1px solid #d8e0ea; background: #f8fafc;" required>
+                        <option value="">-- Pilih Jenis Penilaian --</option>
+                        <option value="Ulangan Harian" {{ old('jenis_nilai') == 'Ulangan Harian' ? 'selected' : '' }}>Ulangan Harian</option>
+                        <option value="Tugas" {{ old('jenis_nilai') == 'Tugas' ? 'selected' : '' }}>Tugas</option>
+                        <option value="Kuis" {{ old('jenis_nilai') == 'Kuis' ? 'selected' : '' }}>Kuis</option>
+                        <option value="UTS" {{ old('jenis_nilai') == 'UTS' ? 'selected' : '' }}>UTS</option>
+                        <option value="UAS" {{ old('jenis_nilai') == 'UAS' ? 'selected' : '' }}>UAS</option>
+                    </select>
                 </div>
 
                 <div class="table-responsive">
@@ -304,7 +309,14 @@
             <input type="hidden" name="jadwal_id" value="{{ $selectedJadwal->id_jadwal ?? '' }}">
             <div style="margin-bottom:15px;">
                 <label style="display:block; font-weight:bold; font-size:12px; color:#7b8490; margin-bottom:5px;">Jenis Penilaian</label>
-                <input type="text" name="jenis_nilai" required placeholder="Contoh: UTS, Tugas Harian" style="width:100%; padding:10px; border:1px solid #d8e0ea; border-radius:10px; box-sizing: border-box;">
+                <select name="jenis_nilai" required style="width:100%; padding:10px; border:1px solid #d8e0ea; border-radius:10px; box-sizing: border-box;">
+                    <option value="">-- Pilih Jenis Penilaian --</option>
+                    <option value="Ulangan Harian">Ulangan Harian</option>
+                    <option value="Tugas">Tugas</option>
+                    <option value="Kuis">Kuis</option>
+                    <option value="UTS">UTS</option>
+                    <option value="UAS">UAS</option>
+                </select>
             </div>
             <div style="margin-bottom:20px;">
                 <label style="display:block; font-weight:bold; font-size:12px; color:#7b8490; margin-bottom:5px;">File Excel (.xlsx)</label>

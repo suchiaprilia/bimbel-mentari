@@ -109,7 +109,14 @@
             </div>
             <div class="form-group">
               <label>Jenis Nilai</label>
-              <input type="text" name="jenis_nilai" class="form-control" value="{{ $row->jenis_nilai }}" required>
+              <select name="jenis_nilai" class="form-control" required>
+                <option value="">-- Pilih Jenis Nilai --</option>
+                <option value="Ulangan Harian" {{ $row->jenis_nilai == 'Ulangan Harian' ? 'selected' : '' }}>Ulangan Harian</option>
+                <option value="Tugas" {{ $row->jenis_nilai == 'Tugas' ? 'selected' : '' }}>Tugas</option>
+                <option value="Kuis" {{ $row->jenis_nilai == 'Kuis' ? 'selected' : '' }}>Kuis</option>
+                <option value="UTS" {{ $row->jenis_nilai == 'UTS' ? 'selected' : '' }}>UTS</option>
+                <option value="UAS" {{ $row->jenis_nilai == 'UAS' ? 'selected' : '' }}>UAS</option>
+              </select>
             </div>
             <div class="form-group">
               <label>Nilai (Angka)</label>
